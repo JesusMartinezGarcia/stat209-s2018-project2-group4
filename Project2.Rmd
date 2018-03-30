@@ -1,6 +1,6 @@
 ---
 title: "project 2"
-author: "Camille Cavicchio"
+author: "Camille Cavicchio, Alain Perez, Jesus Martinez "
 date: "3/27/2018"
 output: html_document
 ---
@@ -10,5 +10,6 @@ library(tidyverse)
 library(RColorBrewer)
 under5mortality<-read_csv("under5mortality.csv")
 hivprev<-read_csv("hivprevalence.csv")
-
+tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
+View(tb)
 ```
