@@ -12,3 +12,9 @@ under5mortality<-read_csv("under5mortality.csv")
 hivprev<-read_csv("hivprevalence.csv")
 
 ```
+
+
+```{r}
+glimpse(hivprev)
+glimpse(under5mortality)
+```
