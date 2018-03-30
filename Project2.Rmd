@@ -8,8 +8,11 @@ output: html_document
 ```{r}
 library(tidyverse)
 library(RColorBrewer)
-under5mortality<-read_csv("under5mortality.csv")
+GDP<-read_csv("GDPpercapita.csv")
 hivprev<-read_csv("hivprevalence.csv")
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
-View(tb)
+GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1990) %>% filter(year<2008)%>%group_by(Country) 
+
 ```
+
+
