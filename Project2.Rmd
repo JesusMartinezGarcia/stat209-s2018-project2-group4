@@ -8,8 +8,19 @@ output: html_document
 ```{r}
 library(tidyverse)
 library(RColorBrewer)
-under5mortality<-read_csv("under5mortality.csv")
 hivprev<-read_csv("hivprevalence.csv")
+
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
-View(tb)
+
+tb<-tb%>%
+  gather(key=Year,
+         value=Infected,
+         X1990:X2007)
+tb<-tb%>%
+  mutate(
+    Year=parse_number(Year)
+  )
+
+
+
 ```
