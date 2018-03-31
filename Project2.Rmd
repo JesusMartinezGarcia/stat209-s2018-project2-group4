@@ -10,12 +10,11 @@ library(tidyverse)
 library(RColorBrewer)
 GDP<-read_csv("GDPpercapita.csv")
 hivprev<-read_csv("hivprevalence.csv")
-
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
 
 tb<-tb%>%
   gather(key=Year,
-         value=Infected,
+         value=InfectedTB,
          X1990:X2007)
 tb<-tb%>%
   mutate(
@@ -26,7 +25,19 @@ tb<-tb%>%
 GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1990) %>% filter(year<2008)%>%group_by(Country) 
 
 GDP_tb<-left_join(tb,GDP)
-#View(GDP_tb)
+
+hivprev<-hivprev%>%
+  gather(key=Year,
+         value=percent_infectedHIV,
+         `1979`:`2011`)%>%
+  filter(Year>1989 & Year<2008)%>%
+  mutate(
+    Year=parse_number(Year)
+  )
+
+
+combined_data<-left_join(GDP_tb,hivprev)
+
 ```
 
 
