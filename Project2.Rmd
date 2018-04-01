@@ -5,17 +5,57 @@ date: "3/27/2018"
 output: html_document
 ---
 
-```{r}
+------------------------------------------------------------------------
+Outline
+1. Finish out the gathering code and commit <toniguhjt
+2. Join the data set <Alain will do this>
+3.Make the graphs, individuals, Make a function that makes graphs
+4.Millie will take the statitsics from graphs and data
+5.Gailyn will do writing portion
+------------------------------------------------------------------------
+
+
+```{r}     
+#Loading all libraries and csvs
+
 library(tidyverse)
 library(RColorBrewer)
-under5mortality<-read_csv("under5mortality.csv")
+library(ggplot2)
+library(ggthemes)
+GDP<-read_csv("GDPpercapita.csv")
 hivprev<-read_csv("hivprevalence.csv")
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
 ```
 
 
-#1. Finish out the gathering code and commit <toniguhjt
-#2. Join the data set <Alain will do this>
-#3.Make the graphs, individuals, Make a function that makes graphs
-#4.Millie will take the statitsics from graphs and data
-#5.Gailyn will do writing portion
+
+```{r}
+#Converting our data into a tidy format with the usage of gather, filter, mutate, parse, and left join.
+
+tb<-tb%>%
+  gather(key=Year,
+         value=InfectedTB,
+         X1990:X2007)
+tb<-tb%>%
+  mutate(
+    Year=parse_number(Year)
+  )
+
+
+GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1990) %>% filter(year<2008)%>%group_by(Country) 
+
+GDP_tb<-left_join(tb,GDP)
+
+hivprev<-hivprev%>%
+  gather(key=Year,
+         value=percent_infectedHIV,
+         `1979`:`2011`)%>%
+  filter(Year>1989 & Year<2008)%>%
+  mutate(
+    Year=parse_number(Year)
+  )
+
+#Here is our comided data set
+combined_data<-left_join(GDP_tb,hivprev)
+
+```
