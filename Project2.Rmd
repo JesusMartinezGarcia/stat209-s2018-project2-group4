@@ -46,7 +46,9 @@ View(combined_data)
 glimpse(combined_data)
 
 combined_data<-combined_data [-c(2)]
+combined_data<-combined_data%>%filter(!is.na(percent_infectedHIV))%>% filter(!is.na(gdp))
 
-combined_data%>%summarise(Countries=sum(Country)
+combined_data%>%group_by(Country)%>%summarise(num_countries=n_distinct(Country))
+#136 countries in the dataset
 View(combined_data)
 ```
