@@ -41,13 +41,20 @@ hivprev<-hivprev%>%
 
 combined_data<-left_join(GDP_tb,hivprev)
 
-combined_data<-combined_data [-c(2)]
+combined_data<-combined_data%>%select(-starts_with("X"))
+
 combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
 
 combined_data%>%group_by(Country)%>%summarise(num_countries=n_distinct(Country))
 #136 countries in the dataset
 
+combined_data%>% arrange(desc(percent_infectedHIV))
 
+combined_data %>% arrange(desc(InfectedTB))
 
 View(combined_data)
 ```
+
+
+
+
