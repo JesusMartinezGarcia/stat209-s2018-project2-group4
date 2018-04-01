@@ -1,6 +1,6 @@
 ---
-title: "project 2"
-author: "Camille Cavicchio, Alain Perez, Jesus Martinez "
+title: "Project 2"
+author: "Camille Cavicchio, Alain Perez, Jesus Martinez, Gailyn Gabriel"
 date: "3/27/2018"
 output: html_document
 ---
@@ -18,14 +18,11 @@ tb<-tb%>%
          X1990:X2007)
 tb<-tb%>%
   mutate(
-    Year=parse_number(Year)
+    Year=parse_number(Year),
+    InfectedTB=InfectedTB/1000
   )
 
-
-
-
 GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1989) %>% filter(year<2008)%>%group_by(Country)%>%rename(Year="year") %>%mutate(Year=parse_number(Year))
-
 
 GDP_tb<-left_join(tb,GDP)
 
@@ -38,14 +35,13 @@ hivprev<-hivprev%>%
     Year=parse_number(Year)
   )%>%rename(Country="country")
 
-
 combined_data<-left_join(GDP_tb,hivprev)
-
-View(combined_data)
-
-glimpse(combined_data)
 
 combined_data<-combined_data [-c(2)]
 combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
 View(combined_data)
+
+
+ 
+
 ```
