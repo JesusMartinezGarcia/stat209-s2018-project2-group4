@@ -47,10 +47,14 @@ hivprev<-hivprev%>%
 combined_data<-left_join(GDP_tb,hivprev)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 View(combined_data)
 =======
 glimpse(combined_data)
 =======
+=======
+combined_data<-combined_data [-c(2)]
+>>>>>>> f43f2a211d141b4316d34cc1fcbb2b3fcf8bb529
 View(combined_data)
 >>>>>>> 0abdae0817e9c028716a2d7b82e49a14ad23d19e
 #combined_data%>%group_by(Country)%>%select("tb","hivprev")
