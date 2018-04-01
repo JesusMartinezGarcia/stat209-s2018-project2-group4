@@ -5,12 +5,32 @@ date: "3/27/2018"
 output: html_document
 ---
 
-```{r}
+------------------------------------------------------------------------
+Outline
+1. Finish out the gathering code and commit <toniguhjt
+2. Join the data set <Alain will do this>
+3.Make the graphs, individuals, Make a function that makes graphs
+4.Millie will take the statitsics from graphs and data
+5.Gailyn will do writing portion
+------------------------------------------------------------------------
+
+
+```{r}     
+#Loading all libraries and csvs
+
 library(tidyverse)
 library(RColorBrewer)
+library(ggplot2)
+library(ggthemes)
 GDP<-read_csv("GDPpercapita.csv")
 hivprev<-read_csv("hivprevalence.csv")
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
+```
+
+
+
+```{r}
+#Converting our data into a tidy format with the usage of gather, filter, mutate, parse, and left join.
 
 tb<-tb%>%
   gather(key=Year,
@@ -35,6 +55,7 @@ hivprev<-hivprev%>%
     Year=parse_number(Year)
   )%>%rename(Country="country")
 
+<<<<<<< HEAD
 combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data [-c(2)]
@@ -45,3 +66,22 @@ View(combined_data)
  
 
 ```
+=======
+#Here is our comided data set
+combined_data<-left_join(GDP_tb,hivprev)
+
+combined_data<-combined_data%>%select(-starts_with("X"))
+
+combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
+
+combined_data%>%group_by(Country)%>%summarise(num_countries=n_distinct(Country))
+#136 countries in the dataset
+
+combined_data%>% arrange(desc(percent_infectedHIV))
+
+combined_data %>% arrange(desc(InfectedTB))
+
+
+```
+
+>>>>>>> 2a9799ef0999e6bce7bccad1a90605eacdf59981
