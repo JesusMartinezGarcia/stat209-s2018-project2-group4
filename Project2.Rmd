@@ -42,7 +42,10 @@ tb<-tb%>%
   )
 
 
-GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1990) %>% filter(year<2008)%>%group_by(Country) 
+
+
+GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1989) %>% filter(year<2008)%>%group_by(Country)%>%rename(Year="year") %>%mutate(Year=parse_number(Year))
+
 
 GDP_tb<-left_join(tb,GDP)
 
@@ -53,9 +56,20 @@ hivprev<-hivprev%>%
   filter(Year>1989 & Year<2008)%>%
   mutate(
     Year=parse_number(Year)
-  )
+  )%>%rename(Country="country")
 
 #Here is our comided data set
 combined_data<-left_join(GDP_tb,hivprev)
 
+<<<<<<< HEAD
 ```
+=======
+View(combined_data)
+
+glimpse(combined_data)
+
+combined_data<-combined_data [-c(2)]
+combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
+View(combined_data)
+```
+>>>>>>> 66e21ca4e99d4af6516ba0e1356cc8130962e138
