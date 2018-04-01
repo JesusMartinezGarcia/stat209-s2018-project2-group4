@@ -47,5 +47,6 @@ glimpse(combined_data)
 
 combined_data<-combined_data [-c(2)]
 
+combined_data%>%summarise(Countries=sum(Country)
 View(combined_data)
 ```
