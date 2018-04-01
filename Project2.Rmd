@@ -22,11 +22,15 @@ tb<-tb%>%
   )
 
 
+<<<<<<< HEAD
 GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1989) %>% filter(year<2008)%>%group_by(Country)%>%
   rename(Year=year)%>%
   mutate(
     Year=parse_number(Year)
   )
+=======
+GDP<-GDP%>%gather(key="year", value="gdp", -1) %>% filter(gdp != 0) %>% filter(year>1989) %>% filter(year<2008)%>%group_by(Country)%>%rename(Year="year") %>%mutate(Year=parse_number(Year))
+>>>>>>> c23ff061e1b4df3551d22f3721a327ea3c321afb
 
 GDP_tb<-left_join(tb,GDP)
 
@@ -37,12 +41,20 @@ hivprev<-hivprev%>%
   filter(Year>1989 & Year<2008)%>%
   mutate(
     Year=parse_number(Year)
-  )
+  )%>%rename(Country="country")
 
 
 combined_data<-left_join(GDP_tb,hivprev)
+<<<<<<< HEAD
 View(combined_data)
+=======
+glimpse(combined_data)
+#combined_data%>%group_by(Country)%>%select("tb","hivprev")
+
+>>>>>>> c23ff061e1b4df3551d22f3721a327ea3c321afb
 
 ```
+
+
 
 
