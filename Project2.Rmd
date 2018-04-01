@@ -11,11 +11,11 @@ library(RColorBrewer)
 under5mortality<-read_csv("under5mortality.csv")
 hivprev<-read_csv("hivprevalence.csv")
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
-View(tb)
 ```
 
 
-```{r}
-glimpse(hivprev)
-glimpse(under5mortality)
-```
+#1. Finish out the gathering code and commit <toniguhjt
+#2. Join the data set <Alain will do this>
+#3.Make the graphs, individuals, Make a function that makes graphs
+#4.Millie will take the statitsics from graphs and data
+#5.Gailyn will do writing portion
