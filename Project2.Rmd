@@ -55,7 +55,7 @@ hivprev<-hivprev%>%
     Year=parse_number(Year)
   )%>%rename(Country="country")
 
-<<<<<<< HEAD
+
 combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data [-c(2)]
@@ -66,8 +66,9 @@ View(combined_data)
  
 
 ```
-=======
-#Here is our comided data set
+
+```{r}
+#Here is our combined data set
 combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data%>%select(-starts_with("X"))
@@ -84,4 +85,3 @@ combined_data %>% arrange(desc(InfectedTB))
 
 ```
 
->>>>>>> 2a9799ef0999e6bce7bccad1a90605eacdf59981
