@@ -2,7 +2,9 @@
 title: "Project 2"
 author: "Camille Cavicchio, Alain Perez, Jesus Martinez, Gailyn Gabriel"
 date: "3/27/2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ------------------------------------------------------------------------
@@ -177,6 +179,7 @@ HIV_GDP_FPlot<- ggplot(HIV_GDPData, aes(x = Year)) +
 HIV_GDP_FPlot
 }
 ```
+
 
 ```{r}
 graph_function(0, 175, geom_point, 2.5, "HIV % in Low GDP Per Capita Countries")
