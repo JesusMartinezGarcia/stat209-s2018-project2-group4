@@ -2,26 +2,28 @@
 title: "Project 2"
 author: "Camille Cavicchio, Alain Perez, Jesus Martinez, Gailyn Gabriel"
 date: "3/27/2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ------------------------------------------------------------------------
 Outline
-1. Finish out the gathering code and commit <toniguhjt
-2. Join the data set <Alain will do this>
+1. Finish out the gathering code and commit <tonight>
+2.Join the data set <Alain will do this>
 3.Make the graphs, individuals, Make a function that makes graphs
 4.Millie will take the statitsics from graphs and data
 5.Gailyn will do writing portion
 ------------------------------------------------------------------------
 
 
-```{r}     
+```{r, warning=FALSE}     
 #Loading all libraries and csvs
 
 library(tidyverse)
 library(RColorBrewer)
 library(ggplot2)
-library(ggthemes)
+#library(ggthemes)
 GDP<-read_csv("GDPpercapita.csv")
 hivprev<-read_csv("hivprevalence.csv")
 tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv") 
@@ -52,7 +54,7 @@ hivprev<-hivprev%>%
          `1979`:`2011`)%>%
   filter(Year>1989 & Year<2008)%>%
   mutate(
-    Year=parse_number(Year)
+    Year=parse_number(Year), percent_infectedHIV=parse_number(percent_infectedHIV)
   )%>%rename(Country="country")
 
 
@@ -60,15 +62,16 @@ combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data [-c(2)]
 combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
-View(combined_data)
+#View(combined_data)
 
-
- 
-
+<<<<<<< HEAD
 ```
 
 ```{r}
 #Here is our combined data set
+=======
+#Here is our comided data set
+>>>>>>> f7f8edf8f56f904f172896379e22d2f2aa2249fc
 combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data%>%select(-starts_with("X"))
@@ -85,3 +88,80 @@ combined_data %>% arrange(desc(InfectedTB))
 
 ```
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+##GDP's impact on HIV percentages
+
+```{r Graph function, echo=FALSE}
+#Where low_GDP is the lower bound of average GDP of each country
+#Where high_GDP is the upper bound of average GDP of each country
+#Where type is the type of graph you want to display (geom_point, geom_line)
+#Where Fsize is the size of the line, point you want to display
+#Where title is the title of the graph
+
+graph_function <-function(low_GDP, high_GDP, graph_type, Fsize, title, exclude= "Anatartica")
+{HIV_GDPData <- HIV_GDP_data %>% filter(low_GDP< average_GDP & average_GDP < high_GDP & Country != exclude)
+
+#Building my own theme to style the text in the graph
+mynamestheme <- theme(plot.title = element_text(family = "Courier", face = "bold", size = (15)), 
+                 legend.title = element_text(colour = "black",  face = "bold.italic", family = "Courier"), 
+                 legend.text = element_text(face = "italic", colour="black",family = "Courier"), 
+                  axis.title = element_text(family = "Courier", size = (10), colour = "black"),
+                  axis.text = element_text(family = "Courier", colour = "black", size = (10)))
+
+#Calcualting the average GDP of each country
+average_GDP <- combined_data %>% group_by(Country) %>% summarize(average_GDP = mean(gdp))
+HIV_GDP_data<-combined_data %>% right_join(average_GDP, by="Country")
+#View(HIV_GDP_data) #Key average GDPs: 18288.450, 1000
+
+
+HIV_GDP_FPlot<- ggplot(HIV_GDPData, aes(x = Year)) +
+                graph_type(size=Fsize, aes(y= percent_infectedHIV, color=Country))+
+                #Setting up the labels in the axis
+                labs(x = "Year", y = "HIV % in Population", colour = "Key")+    
+                #Setting up the labels on the title
+                ggtitle( title )+
+                #Setting up a theme
+                theme_classic()+
+                mynamestheme
+HIV_GDP_FPlot
+}
+```
+
+An interesting pattern emerges looking at the percentages of HIV across a variety of countries when grouped by the average GDP per capita from 1990 to 2007. Countries with low GDP per capita in generally have a high percent of people with HIV in their respective population. Across time theses percentages do not stay constant, they fluctuate from year to year. This fluctuation could indicate that those infected with HIV are dying rapidly and more people are getting infected due to the lack of available contraceptives; this would make sense for a country with low GDP per capita as accessibility to medical treatment may be rare and contraceptives are seen as a luxury good. An interesting trend found in central and Sub-Saharan Africa who have low GDP per capita is that HIV percent peak and then a decrease during the mid 1990s. Additional readings confirm that an epidemic hit that region of Africa which was then followed by large combating efforts and treatment provided by the United Nations and the Blue Cross. 
+
+ [http://www.blackhistorymonth.org.uk/article/section/real-stories/the-history-of-aids-in-africa/]
+
+
+```{r}
+graph_function(0, 175, geom_point, 2.5, "HIV % in Low GDP Per Capita Countries")
+```
+The limits of grouping countries by GDP per capita is that location may also provide a clue to the presence of HIV in populations; we note that a lot of countries with low GDP per capita happen to be in Africa. Nevertheless, GDP per capita does provide a backdrop for comparison between "rich countries" and "poor countries." A similar analysis of the top six countries with high GDP per capita shows that the HIV percentages in these countries is dramatically smaller, ranging less than 1% of the population. HIV percentages also do not tend to fluctuate but remain constant. High GDP may indicate better access to medical facilities and contraceptives. 
+
+
+```{r}
+graph_function(29000, 50000, geom_step, 2.5, "HIV % in High GDP Per Capita Countires", exclude= "Qatar")
+```
+
+----------------------------------------------------------------------------------------------------------------------------------
+>>>>>>> f7f8edf8f56f904f172896379e22d2f2aa2249fc
