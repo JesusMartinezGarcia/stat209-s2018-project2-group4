@@ -7,14 +7,7 @@ output:
   pdf_document: default
 ---
 
-------------------------------------------------------------------------
-Outline
-1. Finish out the gathering code and commit <tonight>
-2.Join the data set <Alain will do this>
-3.Make the graphs, individuals, Make a function that makes graphs
-4.Millie will take the statitsics from graphs and data
-5.Gailyn will do writing portion
-------------------------------------------------------------------------
+
 
 
 ```{r, warning=FALSE, message= FALSE, echo=FALSE}     
