@@ -121,14 +121,15 @@ HIV_GDP_FPlot
 }
 ```
 
-An interesting pattern emerges looking at the percentages of HIV across a variety of countries when grouped by the average GDP per capita from 1990 to 2007. Countries with low GDP per capita in generally have a high percent of people with HIV in their respective population. Across time theses percentages do not stay constant, they fluctuate from year to year. This fluctuation could indicate that those infected with HIV are dying rapidly and more people are getting infected due to the lack of available contraceptives; this would make sense for a country with low GDP per capita as accessibility to medical treatment may be rare and contraceptives are seen as a luxury good. An interesting trend found in central and Sub-Saharan Africa who have low GDP per capita is that HIV percent peak and then a decrease during the mid 1990s. Additional readings confirm that an epidemic hit that region of Africa which was then followed by large combating efforts and treatment provided by the United Nations and the Blue Cross. 
+An interesting pattern emerges looking at the percentages of HIV across a variety of countries when grouped by the average GDP per capita from 1990 to 2007. Countries with low GDP per capita in generally have a high percent of people with HIV in their respective population. Across time theses percentages do not stay constant, they fluctuate from year to year. This fluctuation could indicate that those infected with HIV are dying rapidly and more people are getting infected due to the lack of available contraceptives; this would make sense for a country with low GDP per capita as accessibility to medical treatment may be rare and contraceptives are seen as a luxury good. An interesting trend found in central and Sub-Saharan Africa who have low GDP per capita is that HIV percent peak and then a decrease during the mid 1990s. [Additional readings](http://www.blackhistorymonth.org.uk/article/section/real-stories/the-history-of-aids-in-africa/) confirm that an epidemic hit that region of Africa which was then followed by large combating efforts and treatment provided by the United Nations and the Blue Cross. 
 
- [http://www.blackhistorymonth.org.uk/article/section/real-stories/the-history-of-aids-in-africa/]
+ 
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 graph_function(HIV_GDP_data, 0, 175, geom_point, 2.5, "HIV % in Low GDP Per Capita Countries")
 ```
+
 The limits of grouping countries by GDP per capita is that location may also provide a clue to the presence of HIV in populations; we note that a lot of countries with low GDP per capita happen to be in Africa. Nevertheless, GDP per capita does provide a backdrop for comparison between "rich countries" and "poor countries." A similar analysis of the top six countries with high GDP per capita shows that the HIV percentages in these countries is dramatically smaller, ranging less than 1% of the population. HIV percentages also do not tend to fluctuate but remain constant. High GDP may indicate better access to medical facilities and contraceptives. 
 
 
