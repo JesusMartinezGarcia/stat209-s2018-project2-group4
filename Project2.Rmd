@@ -64,14 +64,13 @@ combined_data<-combined_data [-c(2)]
 combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
 #View(combined_data)
 
-<<<<<<< HEAD
+
 ```
 
 ```{r}
 #Here is our combined data set
-=======
+
 #Here is our comided data set
->>>>>>> f7f8edf8f56f904f172896379e22d2f2aa2249fc
 combined_data<-left_join(GDP_tb,hivprev)
 
 combined_data<-combined_data%>%select(-starts_with("X"))
@@ -88,8 +87,7 @@ combined_data %>% arrange(desc(InfectedTB))
 
 ```
 
-<<<<<<< HEAD
-=======
+
 
 
 
