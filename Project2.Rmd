@@ -17,7 +17,7 @@ Outline
 ------------------------------------------------------------------------
 
 
-```{r, warning=FALSE}     
+```{r, warning=FALSE, message= FALSE, echo=FALSE}     
 #Loading all libraries and csvs
 
 library(tidyverse)
@@ -31,7 +31,7 @@ tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv")
 
 
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Converting our data into a tidy format with the usage of gather, filter, mutate, parse, and left join.
 
 tb<-tb%>%
@@ -67,7 +67,7 @@ combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
 
 ```
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 #Here is our combined data set
 
 #Here is our comided data set
@@ -110,7 +110,7 @@ combined_data %>% arrange(desc(InfectedTB))
 ------------------------------------------------------------------------------------------------------------------------------------
 ##GDP's impact on HIV percentages
 
-```{r Graph function, echo=FALSE}
+```{r Graph function, echo=FALSE, message=FALSE, warning=FALSE}
 #Where low_GDP is the lower bound of average GDP of each country
 #Where high_GDP is the upper bound of average GDP of each country
 #Where type is the type of graph you want to display (geom_point, geom_line)
@@ -118,7 +118,7 @@ combined_data %>% arrange(desc(InfectedTB))
 #Where title is the title of the graph
 
 graph_function <-function(low_GDP, high_GDP, graph_type, Fsize, title, exclude= "Anatartica")
-{HIV_GDPData <- HIV_GDP_data %>% filter(low_GDP< average_GDP & average_GDP < high_GDP & Country != exclude)
+{HIV_GDP_data <- combined%>% filter(low_GDP< average_GDP & average_GDP < high_GDP & Country != exclude)
 
 #Building my own theme to style the text in the graph
 mynamestheme <- theme(plot.title = element_text(family = "Courier", face = "bold", size = (15)), 
@@ -133,7 +133,7 @@ HIV_GDP_data<-combined_data %>% right_join(average_GDP, by="Country")
 #View(HIV_GDP_data) #Key average GDPs: 18288.450, 1000
 
 
-HIV_GDP_FPlot<- ggplot(HIV_GDPData, aes(x = Year)) +
+HIV_GDP_FPlot<- ggplot(HIV_GDP_data, aes(x = Year)) +
                 graph_type(size=Fsize, aes(y= percent_infectedHIV, color=Country))+
                 #Setting up the labels in the axis
                 labs(x = "Year", y = "HIV % in Population", colour = "Key")+    
@@ -161,5 +161,4 @@ The limits of grouping countries by GDP per capita is that location may also pro
 graph_function(29000, 50000, geom_step, 2.5, "HIV % in High GDP Per Capita Countires", exclude= "Qatar")
 ```
 
-----------------------------------------------------------------------------------------------------------------------------------
->>>>>>> f7f8edf8f56f904f172896379e22d2f2aa2249fc
+
