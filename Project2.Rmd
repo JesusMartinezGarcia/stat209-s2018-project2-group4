@@ -3,7 +3,7 @@ title: "Project 2"
 author: "Camille Cavicchio, Alain Perez, Jesus Martinez, Gailyn Gabriel"
 date: "3/27/2018"
 output:
-  html_document: default
+  html_document: 
   pdf_document: default
 ---
 
