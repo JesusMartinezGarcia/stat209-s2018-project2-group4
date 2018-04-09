@@ -6,11 +6,6 @@ output:
   html_document: 
   pdf_document: default
 ---
-
-
-
-
-
 ##Introduction## 
 
   Since the epidemic of the 1980s, HIV/AIDS remains one of the most pressing  global public health challenges, particularly in low- and middle-income countries. Access to antiretroviral therapy (ART) prolongs the lifespan of HIV positive people yet is only accessible to 53% of the 36.7 million people living with HIV in 2016. ARTs have also been shown to prevent the transmission of HIV as well as cure onset Tuberculosis (TB). What are the barriers to distributing ARTs to those that need and without in low income countries? As a framework to explore this question, we use GDP per capita to examine global prevalence of incidences of HIV across different countries amidst each countries GDP between the years of 1990 and 2007.  To pick the Countries we are looking at we filtered, arragnged, and selected based on average GDP over the timeframe. We then selected the 6 with the highest average GDP and the 6 lowest average GDP. 
@@ -123,7 +118,8 @@ HIV_GDP_data<-combined_data %>% right_join(average_GDP, by="Country")
                  mynamestheme
  HIV_GDP_FPlot
  }
- ```
+```
+ 
 
 An interesting pattern emerges looking at the percentages of HIV across a variety of countries when grouped by the average GDP per capita from 1990 to 2007. Countries with low GDP per capita in generally have a high percent of people with HIV in their respective population. Across time theses percentages do not stay constant; they fluctuate from year to year. This fluctuation could indicate that those infected with HIV are dying rapidly and more people are getting infected due to the lack of available contraceptives; this would make sense for a country with low GDP per capita as accessibility to medical treatment may be rare and contraceptives are seen as a luxury good. An interesting trend, in Central and Sub-Saharan Africa,found Countries that have low GDP per capita see a peak and sudden decrease in HIV infection during the mid 1990s. [Additional readings](http://www.blackhistorymonth.org.uk/article/section/real-stories/the-history-of-aids-in-africa/) confirm that an epidemic hit that region of Africa which was then followed by large combating efforts and treatment provided by the United Nations and the Blue Cross. 
 
@@ -141,6 +137,10 @@ The limits of grouping countries by GDP per capita is that location may also pro
 graph_function(HIV_GDP_data, 29000, 50000, geom_step, 2.5, "HIV % in High GDP Per Capita Countires", exclude= "Qatar")
 ```
 
+TB and HIV co-infection is when people have both HIV infection, and also either latent or active TB disease. When someone is co-infected, HIV infection speeds up the progression from latent to active TB,  and TB bacteria also accelerate the progress of the HIV infection. In our graph we examine the TB incidence rates of our chosen countries. All chosen low GDP Countries collectively moved towards greater rates of TB. Low GDP countries all some some increase throughout the 90s. Burundi and Malawi were hit the hardest by the epidemic and struggled the most regarding containment Both show the fastest increase in the 90s and begin to decrease around 2003. During the 90s, counties saw a general decrease with Japan showing the greatest gains in containment. High GDP Countries were able to make greater gains in regards to containment over the course of 10 years. There was slight change in high GDP  countries over the years. Countries remained stable or drastically decreased like Japan over the course of 10 years. This speaks to the ability of these countries to contain transmissions. 
+
+Geoms and Aesthetics 
+To depict our data, we decided to use line graphs and scatterplots as our data is best visualized as to emphasize the trend of individual cases overtime. Our graphs allow for us to draw the comparisons we desire while also observing changes overtime. All graphs use the cartesian coordinate system, but plot different variables against each other. We plan to adjust the scales according to the variables that we plan to use.
 ```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE}
 #This filters out the desired countries according to gdp and creates the selective data sets for the graphs 
 
@@ -166,38 +166,25 @@ lowcountry
 #where y and x are the names of grouping variables that define the rows (vertical) and columns (horizontal) of the faceted grid, respectively.
 ```
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
-
-base<-ggplot(lowcountry, aes(y = InfectedTB , x = percent_infectedHIV)) 
- 
-lowcountryplot<-base +
- geom_point(aes(color = Country, fill = Country))  +
- theme_minimal() + 
- facet_wrap(~Year, ncol = 10) 
-
-lowcountryplot
-
-
-
+```{r base_function, warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+basefunction<-function(data){
+  base<-ggplot(data, aes(y=InfectedTB, x=percent_infectedHIV))
+  
+  plot1<-base+geom_point(aes(color=Country, fill=Country))+theme_minimal()+facet_wrap(~Year, ncol=10)
+  plot1
+}
 ```
 
-```{r, warning=FALSE, echo=FALSE, message=FALSE}
- 
-base2<-ggplot(highcountry, aes(y = InfectedTB , x = percent_infectedHIV)) 
-
- highcountryplot<-base2 +
- geom_point(aes(color = Country, fill = Country))  +
- theme_minimal() + 
- facet_wrap(~Year, ncol = 10) 
-
-highcountryplot
+```{r, echo=FALSE}
+basefunction(lowcountry)
+basefunction(highcountry)
 ```
 
-TB and HIV co-infection is when people have both HIV infection, and also either latent or active TB disease. When someone is co-infected, HIV infection speeds up the progression from latent to active TB,  and TB bacteria also accelerate the progress of the HIV infection. In our graph we examine the TB incidence rates of our chosen countries. All chosen low GDP Countries collectively moved towards greater rates of TB. Low GDP countries all some some increase throughout the 90s. Burundi and Malawi were hit the hardest by the epidemic and struggled the most regarding containment Both show the fastest increase in the 90s and begin to decrease around 2003. During the 90s, counties saw a general decrease with Japan showing the greatest gains in containment. High GDP Countries were able to make greater gains in regards to containment over the course of 10 years. There was slight change in high GDP  countries over the years. Countries remained stable or drastically decreased like Japan over the course of 10 years. This speaks to the ability of these countries to contain transmissions. 
 
-Geoms and Aesthetics 
-To depict our data, we decided to use line graphs and scatterplots as our data is best visualized as to emphasize the trend of individual cases overtime. Our graphs allow for us to draw the comparisons we desire while also observing changes overtime. All graphs use the cartesian coordinate system, but plot different variables against each other. We plan to adjust the scales according to the variables that we plan to use.
+
+
 ##Methodology##
+
 Graphs: For our HIV plots we decided that a scatter plot of time against HIV % was the best way to show the levels and volatility in poor countries as there was more variations; for rich countries who generally have stable levels of HIV % a line graph made more sense as many values remain constant; naturally color was associated with country to differentiate the data.
 Graph 2 
 We decided to use a scatter plot to convey the relationship between TB incidence rates and HIV percent per population. The use of color was to create separation and distinction among the cases and to help connect the cases overtime to observe changes.  The theme is minimal to help ease reading the information and to avoid clutter.  
