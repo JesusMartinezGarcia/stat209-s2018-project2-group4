@@ -10,7 +10,13 @@ output:
 
 
 
-```{r, warning=FALSE, message= FALSE, echo=FALSE}     
+
+Introduction 
+
+Since the epidemic of the 1980s, HIV/AIDS remains one of the most pressing  global public health challenges, particularly in low- and middle-income countries. Access to antiretroviral therapy (ART) prolongs the lifespan of HIV positive people yet is only accessible to 53% of the 36.7 million people living with HIV in 2016. ARTs have also been shown to prevent the transmission of HIV as well as cure onset Tuberculosis (TB). What are the barriers to distributing ARTs to those that need and without in low income countries? As a framework to explore this question, we use GDP per capita to examine global prevalence of incidences of HIV across different countries amidst each countries GDP between the years of 1990 and 2007.  
+
+
+```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE}     
 #Loading all libraries and csvs
 
 library(tidyverse)
@@ -24,7 +30,7 @@ tb<- read.csv("indicator_estimated incidence infectious tb per 100000.csv")
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE }
 #Converting our data into a tidy format with the usage of gather, filter, mutate, parse, and left join.
 
 tb<-tb%>%
@@ -60,7 +66,7 @@ combined_data<-filter(combined_data,!is.na(gdp), !is.na(percent_infectedHIV))
 
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE}
 #Here is our combined data set
 
 #Here is our comided data set
@@ -82,59 +88,121 @@ combined_data %>% arrange(desc(InfectedTB))
 
 ------------------------------------------------------------------------------------------------------------------------------------
 ##GDP's impact on HIV percentages
-```{r echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
+```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE }
 #Calcualting the average GDP of each country
 average_GDP <- combined_data %>% group_by(Country) %>% summarize(average_GDP = mean(gdp))
 HIV_GDP_data<-combined_data %>% right_join(average_GDP, by="Country")
 #View(HIV_GDP_data) #Key average GDPs: 18288.450, 1000
 ```
 
+
 ```{r Graph function, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
-#Where low_GDP is the lower bound of average GDP of each country
-#Where high_GDP is the upper bound of average GDP of each country
-#Where type is the type of graph you want to display (geom_point, geom_line)
-#Where Fsize is the size of the line, point you want to display
-#Where title is the title of the graph
-
-
-
-graph_function <-function(data,low_GDP, high_GDP, graph_type, Fsize, title, exclude= "Anatartica")
-{data1 <- data%>% filter(low_GDP< average_GDP & average_GDP < high_GDP & Country != exclude)
-
-#Building my own theme to style the text in the graph
-mynamestheme <- theme(plot.title = element_text(family = "Courier", face = "bold", size = (15)), 
-                 legend.title = element_text(colour = "black",  face = "bold.italic", family = "Courier"), 
-                 legend.text = element_text(face = "italic", colour="black",family = "Courier"), 
-                  axis.title = element_text(family = "Courier", size = (10), colour = "black"),
-                  axis.text = element_text(family = "Courier", colour = "black", size = (10)))
-
-HIV_GDP_FPlot<- ggplot(data1, aes(x = Year)) +
-                graph_type(size=Fsize, aes(y= percent_infectedHIV, color=Country))+
-                #Setting up the labels in the axis
-                labs(x = "Year", y = "HIV % in Population", colour = "Key")+    
-                #Setting up the labels on the title
-                ggtitle( title )+
-                #Setting up a theme
-                theme_classic()+
-                mynamestheme
-HIV_GDP_FPlot
-}
-```
+ #Where low_GDP is the lower bound of average GDP of each country
+ #Where high_GDP is the upper bound of average GDP of each country
+ #Where type is the type of graph you want to display (geom_point, geom_line)
+ #Where Fsize is the size of the line, point you want to display
+ #Where title is the title of the graph
+ 
+ 
+ 
+ graph_function <-function(data,low_GDP, high_GDP, graph_type, Fsize, title, exclude= "Anatartica")
+ {data1 <- data%>% filter(low_GDP< average_GDP & average_GDP < high_GDP & Country != exclude)
+ 
+ #Building my own theme to style the text in the graph
+ mynamestheme <- theme(plot.title = element_text(family = "Courier", face = "bold", size = (15)), 
+                  legend.title = element_text(colour = "black",  face = "bold.italic", family = "Courier"), 
+                  legend.text = element_text(face = "italic", colour="black",family = "Courier"), 
+                   axis.title = element_text(family = "Courier", size = (10), colour = "black"),
+                   axis.text = element_text(family = "Courier", colour = "black", size = (10)))
+ 
+ HIV_GDP_FPlot<- ggplot(data1, aes(x = Year)) +
+                 graph_type(size=Fsize, aes(y= percent_infectedHIV, color=Country))+
+                 #Setting up the labels in the axis
+                 labs(x = "Year", y = "HIV % in Population", colour = "Key")+    
+                 #Setting up the labels on the title
+                 ggtitle( title )+
+                 #Setting up a theme
+                 theme_classic()+
+                 mynamestheme
+ HIV_GDP_FPlot
+ }
+ ```
 
 An interesting pattern emerges looking at the percentages of HIV across a variety of countries when grouped by the average GDP per capita from 1990 to 2007. Countries with low GDP per capita in generally have a high percent of people with HIV in their respective population. Across time theses percentages do not stay constant, they fluctuate from year to year. This fluctuation could indicate that those infected with HIV are dying rapidly and more people are getting infected due to the lack of available contraceptives; this would make sense for a country with low GDP per capita as accessibility to medical treatment may be rare and contraceptives are seen as a luxury good. An interesting trend found in central and Sub-Saharan Africa who have low GDP per capita is that HIV percent peak and then a decrease during the mid 1990s. [Additional readings](http://www.blackhistorymonth.org.uk/article/section/real-stories/the-history-of-aids-in-africa/) confirm that an epidemic hit that region of Africa which was then followed by large combating efforts and treatment provided by the United Nations and the Blue Cross. 
 
  
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
 graph_function(HIV_GDP_data, 0, 175, geom_point, 2.5, "HIV % in Low GDP Per Capita Countries")
 ```
 
 The limits of grouping countries by GDP per capita is that location may also provide a clue to the presence of HIV in populations; we note that a lot of countries with low GDP per capita happen to be in Africa. Nevertheless, GDP per capita does provide a backdrop for comparison between "rich countries" and "poor countries." A similar analysis of the top six countries with high GDP per capita shows that the HIV percentages in these countries is dramatically smaller, ranging less than 1% of the population. HIV percentages also do not tend to fluctuate but remain constant. High GDP may indicate better access to medical facilities and contraceptives. 
 
 
-```{r  echo=FALSE, message=FALSE, warning=FALSE}
-graph_function(HIV_GDP_data,29000, 50000, geom_step, 2.5, "HIV % in High GDP Per Capita Countires", exclude= "Qatar")
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+graph_function(HIV_GDP_data, 29000, 50000, geom_step, 2.5, "HIV % in High GDP Per Capita Countires", exclude= "Qatar")
 ```
 
+```{r, warning=FALSE, echo=FALSE, results="hide", message=FALSE}
+#This filters out the desired countries according to gdp and creates the selective data sets for the graphs 
 
+average_GDP <- combined_data %>% group_by(Country) %>% summarize(average_GDP = mean(gdp))
+HIV_GDP_data<-combined_data %>% right_join(average_GDP, by="Country")
+#View(HIV_GDP_data) #Key average GDPs: 18288.450, 1000
+
+
+#this allows for the selection of low gdp specific countries 
+lowcountry <- HIV_GDP_data%>% filter(average_GDP > 29000 & average_GDP <50000 & Country != "Qatar")
+#This allows for the selection of high gdp specific countries
+highcountry<- HIV_GDP_data%>% filter(average_GDP > 0 & average_GDP< 175 )
+
+#& Country=="Switzerland"& Country=="Norway"&Country=="Luxembourg")
+highcountry
+lowcountry
+```
+
+```{r, echo=FALSE}
+#Faceted low gdp country plot
+
+
+#where y and x are the names of grouping variables that define the rows (vertical) and columns (horizontal) of the faceted grid, respectively.
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+
+base<-ggplot(lowcountry, aes(y = InfectedTB , x = percent_infectedHIV)) 
+ 
+lowcountryplot<-base +
+ geom_point(aes(color = Country, fill = Country))  +
+ theme_minimal() + 
+ facet_wrap(~Year, ncol = 10) 
+
+lowcountryplot
+
+
+
+```
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+ 
+base2<-ggplot(highcountry, aes(y = InfectedTB , x = percent_infectedHIV)) 
+
+ highcountryplot<-base2 +
+ geom_point(aes(color = Country, fill = Country))  +
+ theme_minimal() + 
+ facet_wrap(~Year, ncol = 10) 
+
+highcountryplot
+```
+
+TB and HIV co-infection is when people have both HIV infection, and also either latent or active TB disease. When someone is co-infected, HIV infection speeds up the progression from latent to active TB,  and TB bacteria also accelerate the progress of the HIV infection.In our graph we examine the TB incidence rates of our chosen countries. All chosen low GDP Countries collectively moved towards greater rates of TB. Low GDP countries all some some increase throughout the 90s. Burundi and Malawi were hit the hardest by the epidemic and struggled the most regarding containment Both show the fastest increase in the 90s and begin to decrease around 2003. During the 90s, counties saw a general decrease with Japan showing the greatest gains in containment. High GDP Countries were able to make greater gains in regards to containment over the course of 10 years. There was slight change in high GDP  countries over the years. Countries remained stable or drastically decreased like Japan over the course of 10 years. This speaks to the ability of these countries to contain transmissions. 
+
+Geoms and Aesthetics 
+To depict our data, we decided to use line graphs and scatterplots as our data is best visualized as to emphasize the trend of individual cases overtime. Our graphs allow for us to draw the comparisons we desire while also observing changes overtime. All graphs use the cartesian coordinate system, but plot different variables against each other. We plan to adjust the scales according to the variables that we plan to use.
+##Methodology##
+Graphs: For our HIV plots we decided that a scatter plot of time against HIV % was the best way to show the levels and volatility in poor countries as there was more variations; for rich countries who generally have stable levels of HIV % a line graph made more sense as many values remain constant; naturally color was associated with country to differentiate the data.
+Graph 2 
+We decided to use a scatter plot to convey the relationship between TB incidence rates and HIV percent per population. The use of color was to create separation and distinction among the cases and to help connect the cases overtime to observe changes.  The theme is minimal to help ease reading the information and to avoid clutter.  
+
+Data sets: All of our data comes from gapminder and entails the HIV percentage per population, the Tuberculosis (TB) infected per 100,000, and the GDP per capita per country. The data came from a wide range of year however, they all shared the years 1990-2009 and so they were filtered for those years. Once that was established we parsed the years, since some data sets registered the years as characters and not integers. Then, we joined all these data set together by country in order to see if we could make some trend lines on the diseases and a country’s GDP. Once all the datasets were combined into one master dataset we decided to get rid of observations that were lacking the data we required so we filtered them out. There are a number of reasons a country could have lacked this data. Some reasons include: the country no longer exists, or was founded in the timespan covered by our data, or they just did not record the data.
