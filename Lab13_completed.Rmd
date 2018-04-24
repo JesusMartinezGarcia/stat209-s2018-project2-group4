@@ -1,0 +1,115 @@
+---
+title: "lab13"
+output: html_document
+---
+
+```{r, message = FALSE, echo=FALSE}
+library(dbplyr)
+library(mdsr)
+library(RMySQL)
+library(tidyverse)
+library(ggthemes)
+db <- dbConnect_scidb("airlines")
+dbListTables(db)
+
+```
+
+```{sql connection = db}
+SELECT
+365 * sum(1) as num_flights, -- could also do count(*)
+sum(if(arr_delay < 0, 1, 0)) / sum(1) AS early_pct,
+365 * sum(if(arr_delay > 0, arr_delay, 0)) / 1000000 AS min_late, -- in millions
+365 * sum(if(arr_delay < 0, arr_delay, 0)) / 1000000 AS min_early,
+365 * sum(arr_delay) / 1000000 AS net_delay,
+365 * sum(if(arr_delay = 0, arr_delay + 270, 0)) / 1000000 AS new_arr_delay,
+name
+FROM flights
+LEFT JOIN carriers ON flights.carrier = carriers.carrier
+WHERE year = 2014 and month = 1 AND day = 4
+LIMIT 0,6
+```
+
+```{sql connection = db}
+SELECT 
+name, year, 
+365*sum(1) as numflights,
+sum(if(arr_delay < 0, 1, 0)) / sum(1) AS early_pct,
+365 * sum(if(arr_delay > 0, arr_delay, 0)) / 1000000 AS min_late,
+365 * sum(if(arr_delay < 0, arr_delay, 0)) / 1000000 AS min_early,
+365 * sum(arr_delay) / 1000000 AS net_delay,
+365*sum(if(arr_delay =0,arr_delay+270,0)) / 1000000 AS cancled_flight,
+365*sum(if(arr_delay<120 and arr_delay>0, 1,0))as small_delay,
+365*sum(if(arr_delay>120, 1,0)) as big_delay
+FROM flights
+left join carriers on flights.carrier=carriers.carrier
+WHERE year = 2014 AND month = 1 AND day = 4
+GROUP BY name;
+```
+
+```{sql connection = db}
+DESCRIBE flights
+```
+
+```{r, message=FALSE}
+query <- "SELECT 
+name, year, 
+365*sum(1) as numflights,
+sum(if(arr_delay < 0, 1, 0)) / sum(1) AS early_pct,
+365 * sum(if(arr_delay > 0, arr_delay, 0)) / 1000000 AS min_late,
+365 * sum(if(arr_delay < 0, arr_delay, 0)) / 1000000 AS min_early,
+365 * sum(arr_delay) / 1000000 AS net_delay,
+365*sum(if(arr_delay =0,arr_delay+270,0)) / 1000000 AS cancled_flight,
+365*sum(if(arr_delay<120 and arr_delay>0, 1,0))as small_delay,
+365*sum(if(arr_delay>120, 1,0)) as big_delay
+FROM flights
+left join carriers on flights.carrier=carriers.carrier
+WHERE year = 2014 AND month = 1 AND day = 4
+GROUP BY name;"
+query <- db %>% dbGetQuery(query) %>% collect()
+query <- query %>%
+mutate(small_perct = 100*(small_delay/numflights), big_perct = 100*(big_delay / numflights))
+query
+
+```
+
+```{r, message = FALSE}
+query <- query %>%mutate(
+name = gsub("Air(lines|ways| Lines)", "", name),
+name = gsub("(Inc\\.|Co\\.|Corporation)", "", name),
+name = gsub("\\(.*\\)", "", name),
+name = gsub(" *$", "", name))
+
+query <- query %>% select(
+name,
+year,
+numflights,
+early_pct,
+min_late,
+min_early,
+net_delay,
+cancled_flight,
+small_delay,
+big_delay,
+small_perct,
+big_perct
+)
+
+query
+
+delay_tiday<-query%>%
+ rename(short=small_perct,long=big_perct)%>%
+ gather(key=waitTime, value=short,long,11,12)%>%
+arrange(name)
+delay_tiday
+```
+
+```{r, message = FALSE}
+
+delay_tiday%>%
+  ggplot(aes(x=reorder(name,short)))+geom_bar(stat="identity",aes(y=short, fill=waitTime))+coord_flip()+labs(title="SOUTHWEST'S DELAYS ARE SHORT; \n UNITED'S ARE LONG",subtitle= "As a share of flights scheduled on 1/4/14")+scale_fill_manual(values=c( "red","gold"), labels=c("FLIGHTS DELAYED 120+ MINUTES, \n CANCLED OR DIVERETED", "FLIGHT DELAYED 15-119 MINUTES"))+theme_fivethirtyeight()+theme(legend.position = "top")+theme(legend.title = element_blank())
+
+```
+
+```{r, message=FALSE}
+
+```
